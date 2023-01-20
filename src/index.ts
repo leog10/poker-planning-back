@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import mongoose from 'mongoose';
 import { Server, Socket } from 'socket.io';
 import app from './app';
-import changeUsername from './sockets/changeUsername';
+import changeUsername from './sockets/Room/changeUsername';
 
 const PORT = process.env.PORT || 3000;
 const dbURI = process.env.DB_URI;
@@ -34,12 +34,13 @@ async function main() {
 
 main();
 
-import createRoom from './sockets/createRoom';
-import joinRoom from './sockets/joinRoom';
-import revealCards from './sockets/revealCards';
-import selectCard from './sockets/selectCard';
-import startNewVoting from './sockets/startNewVoting';
-import clientDisconnect from './sockets/clientDisconnect';
+import createRoom from './sockets/Room/createRoom';
+import joinRoom from './sockets/Room/joinRoom';
+import revealCards from './sockets/Cards/revealCards';
+import selectCard from './sockets/Cards/selectCard';
+import startNewVoting from './sockets/Cards/startNewVoting';
+import clientDisconnect from './sockets/Room/clientDisconnect';
+import newIssue from './sockets/Issues/newIssue';
 
 const onConnection = (socket: Socket) => {
   createRoom(io, socket);
@@ -49,6 +50,7 @@ const onConnection = (socket: Socket) => {
   revealCards(io, socket);
   startNewVoting(io, socket);
   clientDisconnect(socket);
+  newIssue(io, socket);
 };
 
 io.on('connection', onConnection);

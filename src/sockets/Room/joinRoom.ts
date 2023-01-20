@@ -1,7 +1,7 @@
 import { isValidObjectId } from 'mongoose';
 import { Server, Socket } from 'socket.io';
-import Room from '../models/Room';
-import { User } from '../models/User';
+import Room from '../../models/Room';
+import { User } from '../../models/User';
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on('client:join_room', async ({ username, roomId, clientId }) => {

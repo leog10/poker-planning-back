@@ -1,8 +1,8 @@
 import { Server, Socket } from 'socket.io';
-import Room from '../models/Room';
+import Room from '../../models/Room';
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
-  client.on('client:add_username', async ({ username, roomId }) => {
+  client.on('client:change_username', async ({ username, roomId }) => {
     await Room.updateOne(
       {
         _id: roomId

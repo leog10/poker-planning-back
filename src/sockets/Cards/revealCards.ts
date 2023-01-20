@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
-import Room from '../models/Room';
-import { round } from '../utils/roundNumber';
+import Room from '../../models/Room';
+import { round } from '../../utils/roundNumber';
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on('client:reveal_cards', async roomId => {
