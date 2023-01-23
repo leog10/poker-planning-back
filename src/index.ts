@@ -2,7 +2,6 @@ import { createServer } from 'http';
 import mongoose from 'mongoose';
 import { Server, Socket } from 'socket.io';
 import app from './app';
-import changeUsername from './sockets/Room/changeUsername';
 
 const PORT = process.env.PORT || 3000;
 const dbURI = process.env.DB_URI;
@@ -34,13 +33,14 @@ async function main() {
 
 main();
 
-import createRoom from './sockets/Room/createRoom';
-import joinRoom from './sockets/Room/joinRoom';
-import revealCards from './sockets/Cards/revealCards';
-import selectCard from './sockets/Cards/selectCard';
-import startNewVoting from './sockets/Cards/startNewVoting';
-import clientDisconnect from './sockets/Room/clientDisconnect';
-import newIssue from './sockets/Issues/newIssue';
+import createRoom from '@Room/createRoom';
+import joinRoom from '@Room/joinRoom';
+import changeUsername from '@Room/changeUsername';
+import clientDisconnect from '@Room/clientDisconnect';
+import revealCards from '@Cards/revealCards';
+import selectCard from '@Cards/selectCard';
+import startNewVoting from '@Cards/startNewVoting';
+import newIssue from '@Issues/newIssue';
 
 const onConnection = (socket: Socket) => {
   createRoom(io, socket);

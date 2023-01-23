@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
-import { Issue } from '../../models/Issue';
-import Room from '../../models/Room';
+import { Issue } from 'models/Issue';
+import Room from 'models/Room';
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on(

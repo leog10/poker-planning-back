@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import Room from '../../models/Room';
+import Room from 'models/Room';
 
 export default (client: Socket & { sessionId?: string }) => {
   client.on('disconnect', async reason => {

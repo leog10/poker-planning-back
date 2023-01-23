@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import authRouter from './auth';
-import roomRouter from './room';
 
 const appRouter = Router();
 
-appRouter.use('/api', roomRouter, authRouter);
+appRouter.use('/api', authRouter);
 
 export default appRouter;
