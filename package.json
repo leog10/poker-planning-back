@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "start:node": "node -r tsconfig-paths/register dist/index.js"
+    "node": "node -r tsconfig-paths/register dist/index.js"
   },
   "author": "",
   "license": "ISC",
