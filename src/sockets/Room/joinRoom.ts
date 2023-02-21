@@ -53,7 +53,8 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
         coffeeTime: room.coffee,
         cardsVotes: room.cards,
         average: room.average,
-        gameOptions: room.gameOptions
+        gameOptions: room.gameOptions,
+        issues: room.issues
       });
       return;
     }
@@ -72,7 +73,8 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
         coffeeTime: room.coffee,
         cardsVotes: room.cards,
         average: room.average,
-        gameOptions: room.gameOptions
+        gameOptions: room.gameOptions,
+        issues: room.issues
       });
 
       client.emit('server:selected_card', user.card);
@@ -97,7 +99,8 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
         coffeeTime: room.coffee,
         cardsVotes: room.cards,
         average: room.average,
-        gameOptions: room.gameOptions
+        gameOptions: room.gameOptions,
+        issues: room.issues
       });
     } else {
       io.to(room.id).emit('server:user_joined', {
@@ -107,7 +110,8 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
         coffeeTime: room.coffee,
         cardsVotes: room.cards,
         average: room.average,
-        gameOptions: room.gameOptions
+        gameOptions: room.gameOptions,
+        issues: room.issues
       });
     }
 

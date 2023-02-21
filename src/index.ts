@@ -41,6 +41,7 @@ import revealCards from '@Cards/revealCards';
 import selectCard from '@Cards/selectCard';
 import startNewVoting from '@Cards/startNewVoting';
 import newIssue from '@Issues/newIssue';
+import deleteAllIssues from '@Issues/deleteAllIssues';
 
 const onConnection = (socket: Socket) => {
   createRoom(io, socket);
@@ -51,6 +52,7 @@ const onConnection = (socket: Socket) => {
   startNewVoting(io, socket);
   clientDisconnect(socket);
   newIssue(io, socket);
+  deleteAllIssues(io, socket);
 };
 
 io.on('connection', onConnection);
