@@ -15,4 +15,7 @@ export class Issue {
 
   @prop()
   storyPoints: string;
+
+  @prop()
+  voting: boolean;
 }
