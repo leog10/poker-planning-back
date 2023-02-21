@@ -5,9 +5,6 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on('client:delete_all_issues', async roomId => {
     console.log('Client delete all issues', roomId, client.sessionId);
 
-    console.log('ESTE ES EL ROOMID', roomId);
-
-
     const room = await Room.findById(roomId);
 
     if (!room) {
