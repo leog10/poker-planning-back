@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import Room from 'models/Room';
 import { round } from 'utils/roundNumber';
+import updateIssue from 'helpers/updateIssue';
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on('client:reveal_cards', async roomId => {
@@ -57,6 +58,8 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       averageVoting: roundAverageVoting,
       cardsVotes
     });
+
+    await updateIssue(averageVoting, roomId, io);
 
     if (!isNaN(roundAverageVoting)) {
       room.average = roundAverageVoting;

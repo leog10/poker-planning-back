@@ -15,7 +15,6 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
 
     room.save();
 
-    client.broadcast.to(roomId).emit('server:issues', room.issues)
-  }
-  );
+    client.broadcast.to(roomId).emit('server:issues', room.issues);
+  });
 };
