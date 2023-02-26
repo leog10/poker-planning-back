@@ -44,6 +44,7 @@ import newIssue from '@Issues/newIssue';
 import deleteAllIssues from '@Issues/deleteAllIssues';
 import deleteIssue from '@Issues/deleteIssue';
 import editIssue from '@Issues/editIssue';
+import editVotingNow from '@Issues/editVotingNow';
 
 const onConnection = (socket: Socket) => {
   createRoom(io, socket);
@@ -57,6 +58,7 @@ const onConnection = (socket: Socket) => {
   deleteAllIssues(io, socket);
   deleteIssue(io, socket);
   editIssue(io, socket);
+  editVotingNow(io, socket);
 };
 
 io.on('connection', onConnection);
