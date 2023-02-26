@@ -59,7 +59,9 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       cardsVotes
     });
 
-    await updateIssue(averageVoting, roomId, io);
+    if (!isNaN(averageVoting)) {
+      await updateIssue(averageVoting, roomId, io);
+    }
 
     if (!isNaN(roundAverageVoting)) {
       room.average = roundAverageVoting;
