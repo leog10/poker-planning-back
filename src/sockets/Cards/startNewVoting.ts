@@ -18,7 +18,7 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
     room.voting = room.users;
     room.reveal = false;
     room.cards = [];
-    room.coffee = false;
+    room.mate = false;
 
     room.save();
 

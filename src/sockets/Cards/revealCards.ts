@@ -47,9 +47,9 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       }
     });
 
-    if (cardsSet.has('☕')) {
-      room.coffee = true;
-      io.to(roomId).emit('server:coffee');
+    if (cardsSet.has('🧉')) {
+      room.mate = true;
+      io.to(roomId).emit('server:mate');
     }
 
     room.cards = cardsVotes;
