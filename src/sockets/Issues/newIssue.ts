@@ -6,7 +6,7 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on(
     'client:new_issue',
     async ({ issue, roomId }: { issue: Issue; roomId: string }) => {
-      console.log('Client select card', roomId, client.sessionId);
+      console.log('Client create issue', roomId, client.sessionId);
 
       const room = await Room.findById(roomId);
 
@@ -15,16 +15,19 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       }
 
       const newIssue: Issue = {
-        id: 'random id podes usar uuid',
+        id: issue.id,
         title: issue.title,
         description: issue.description,
         link: issue.link,
-        storyPoints: issue.storyPoints || ''
+        storyPoints: issue.storyPoints,
+        voting: issue.voting
       };
 
       room.issues.push(newIssue);
 
-      io.to(roomId).emit('server:issues', newIssue);
+      room.save();
+
+      client.broadcast.to(roomId).emit('server:issues', room.issues);
     }
   );
 };

@@ -24,7 +24,7 @@ class Room {
   cards: Cards[];
 
   @prop({ default: false })
-  coffee: boolean;
+  mate: boolean;
 
   @prop()
   average: number;

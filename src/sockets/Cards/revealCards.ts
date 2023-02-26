@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import Room from 'models/Room';
 import { round } from 'utils/roundNumber';
+import updateIssue from 'helpers/updateIssue';
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on('client:reveal_cards', async roomId => {
@@ -46,9 +47,9 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       }
     });
 
-    if (cardsSet.has('☕')) {
-      room.coffee = true;
-      io.to(roomId).emit('server:coffee');
+    if (cardsSet.has('🧉')) {
+      room.mate = true;
+      io.to(roomId).emit('server:mate');
     }
 
     room.cards = cardsVotes;
@@ -57,6 +58,10 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       averageVoting: roundAverageVoting,
       cardsVotes
     });
+
+    if (!isNaN(averageVoting)) {
+      await updateIssue(averageVoting, roomId, io);
+    }
 
     if (!isNaN(roundAverageVoting)) {
       room.average = roundAverageVoting;
