@@ -1,36 +1,36 @@
-import { Socket } from 'socket.io';
-import Room from 'models/Room';
+import { Socket } from "socket.io";
+import Room from "models/Room";
 
 export default (client: Socket & { sessionId?: string }) => {
-  client.on('disconnect', async reason => {
-    console.log('Client Disconnected:', client.id, client.sessionId, reason);
+  client.on("disconnect", async (reason) => {
+    console.log("Client Disconnected:", client.id, client.sessionId, reason);
 
     if (!client.sessionId) {
-      console.log('Invalid session id');
+      console.log("Invalid session id");
       return;
     }
 
     const room = await Room.findOne({
-      'users.clientId': client.sessionId
+      "users.clientId": client.sessionId,
     }).exec();
 
     if (!room) {
-      console.log('Cannot delete. Room not found');
+      console.log("Cannot delete. Room not found");
       return;
     }
 
     const userIndex = room.users.findIndex(
-      user => user.clientId === client.sessionId
+      (user) => user.clientId === client.sessionId
     );
 
     const userVotingIndex = room.voting.findIndex(
-      user => user.clientId === client.sessionId
+      (user) => user.clientId === client.sessionId
     );
 
     room.users.splice(userIndex, 1);
 
     if (room.users.length === 0) {
-      console.log('Room Deleted');
+      console.log("Room Deleted");
       room.delete();
       return;
     }
@@ -39,7 +39,7 @@ export default (client: Socket & { sessionId?: string }) => {
       room.save();
       client.broadcast
         .to(room.id)
-        .emit('server:users', { roomVoting: room.voting, reveal: room.reveal });
+        .emit("server:users", { roomVoting: room.voting, reveal: room.reveal });
       return;
     }
 
@@ -48,6 +48,6 @@ export default (client: Socket & { sessionId?: string }) => {
 
     client.broadcast
       .to(room.id)
-      .emit('server:users', { roomVoting: room.voting, reveal: room.reveal });
+      .emit("server:users", { roomVoting: room.voting, reveal: room.reveal });
   });
 };

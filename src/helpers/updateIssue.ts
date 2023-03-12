@@ -1,20 +1,20 @@
-import Room from 'models/Room';
-import { Server } from 'socket.io';
+import Room from "models/Room";
+import { Server } from "socket.io";
 
 const FIBOCARDS = [
-  { card: '0', checked: false },
-  { card: '1', checked: false },
-  { card: '2', checked: false },
-  { card: '3', checked: false },
-  { card: '5', checked: false },
-  { card: '8', checked: false },
-  { card: '13', checked: false },
-  { card: '21', checked: false },
-  { card: '34', checked: false },
-  { card: '55', checked: false },
-  { card: '89', checked: false },
-  { card: '?', checked: false },
-  { card: '☕', checked: false }
+  { card: "0", checked: false },
+  { card: "1", checked: false },
+  { card: "2", checked: false },
+  { card: "3", checked: false },
+  { card: "5", checked: false },
+  { card: "8", checked: false },
+  { card: "13", checked: false },
+  { card: "21", checked: false },
+  { card: "34", checked: false },
+  { card: "55", checked: false },
+  { card: "89", checked: false },
+  { card: "?", checked: false },
+  { card: "☕", checked: false },
 ];
 
 const updateIssue = async (
@@ -28,9 +28,9 @@ const updateIssue = async (
     return;
   }
 
-  if (room.issues.some(issue => issue.voting === true)) {
+  if (room.issues.some((issue) => issue.voting === true)) {
     const calculateStoryPoint = (averageVote: number) => {
-      if (FIBOCARDS.some(card => card.card === averageVote.toString())) {
+      if (FIBOCARDS.some((card) => card.card === averageVote.toString())) {
         return averageVote.toString();
       }
 
@@ -52,20 +52,20 @@ const updateIssue = async (
 
     const storyPoints = calculateStoryPoint(averageVoting);
 
-    const issueId = room.issues.find(issue => issue.voting === true)?.id;
+    const issueId = room.issues.find((issue) => issue.voting === true)?.id;
 
     await Room.updateOne(
       {
-        _id: roomId
+        _id: roomId,
       },
       {
         $set: {
-          'issues.$[e1].storyPoints': storyPoints,
-          'issues.$[e1].voting': false
-        }
+          "issues.$[e1].storyPoints": storyPoints,
+          "issues.$[e1].voting": false,
+        },
       },
       {
-        arrayFilters: [{ 'e1.id': issueId }]
+        arrayFilters: [{ "e1.id": issueId }],
       }
     );
 
@@ -76,7 +76,7 @@ const updateIssue = async (
     }
 
     setTimeout(() => {
-      io.to(roomId).emit('server:issues', roomIssues.issues);
+      io.to(roomId).emit("server:issues", roomIssues.issues);
     }, 1000);
   }
 };

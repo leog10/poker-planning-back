@@ -1,4 +1,4 @@
-import { prop } from '@typegoose/typegoose';
+import { prop } from "@typegoose/typegoose";
 
 export class User {
   @prop({ required: true })
@@ -7,6 +7,6 @@ export class User {
   @prop()
   username: string;
 
-  @prop({ default: '' })
+  @prop({ default: "" })
   card: string;
 }

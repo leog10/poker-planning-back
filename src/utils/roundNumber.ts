@@ -4,6 +4,6 @@
  * Negative numbers round differently than positive numbers.
  */
 export function round(num: number, decimalPlaces: number) {
-  num = Math.round(Number(num + 'e' + decimalPlaces));
-  return Number(num + 'e' + -decimalPlaces);
+  num = Math.round(Number(num + "e" + decimalPlaces));
+  return Number(num + "e" + -decimalPlaces);
 }

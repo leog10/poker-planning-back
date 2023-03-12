@@ -1,10 +1,10 @@
-import { Server, Socket } from 'socket.io';
-import Room from 'models/Room';
-import { User } from 'models/User';
+import { Server, Socket } from "socket.io";
+import Room from "models/Room";
+import { User } from "models/User";
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
-  client.on('client:create_room', async ({ username, gameName, clientId }) => {
-    console.log('Client Create Room', client.id, username);
+  client.on("client:create_room", async ({ username, gameName, clientId }) => {
+    console.log("Client Create Room", client.id, username);
 
     if (clientId) {
       client.sessionId = clientId;
@@ -13,14 +13,14 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
     }
 
     if (!client.sessionId) {
-      console.log('invalid session id');
+      console.log("invalid session id");
       return;
     }
 
     const user: User = {
       clientId: client.sessionId,
       username,
-      card: ''
+      card: "",
     };
 
     const room = new Room({
@@ -29,21 +29,21 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
       reveal: false,
       gameOptions: {
         gameName,
-        votingSystem: 'Fibo',
+        votingSystem: "Fibo",
         allowedReveal: [user],
-        manageIssues: [user]
-      }
+        manageIssues: [user],
+      },
     });
 
     await room.save();
 
     client.join(room.id);
 
-    io.to(room.id).emit('server:new_room', {
+    io.to(room.id).emit("server:new_room", {
       roomId: room.id,
-      users: room.users
+      users: room.users,
     });
 
-    client.emit('server:client_id', client.sessionId);
+    client.emit("server:client_id", client.sessionId);
   });
 };

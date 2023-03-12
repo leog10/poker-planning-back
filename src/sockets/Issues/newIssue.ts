@@ -1,12 +1,12 @@
-import { Server, Socket } from 'socket.io';
-import { Issue } from 'models/Issue';
-import Room from 'models/Room';
+import { Server, Socket } from "socket.io";
+import { Issue } from "models/Issue";
+import Room from "models/Room";
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on(
-    'client:new_issue',
+    "client:new_issue",
     async ({ issue, roomId }: { issue: Issue; roomId: string }) => {
-      console.log('Client create issue', roomId, client.sessionId);
+      console.log("Client create issue", roomId, client.sessionId);
 
       const room = await Room.findById(roomId);
 
@@ -20,14 +20,14 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
         description: issue.description,
         link: issue.link,
         storyPoints: issue.storyPoints,
-        voting: issue.voting
+        voting: issue.voting,
       };
 
       room.issues.push(newIssue);
 
       room.save();
 
-      client.broadcast.to(roomId).emit('server:issues', room.issues);
+      client.broadcast.to(roomId).emit("server:issues", room.issues);
     }
   );
 };

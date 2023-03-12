@@ -1,35 +1,35 @@
-import { Server, Socket } from 'socket.io';
-import { Issue } from 'models/Issue';
-import Room from 'models/Room';
+import { Server, Socket } from "socket.io";
+import { Issue } from "models/Issue";
+import Room from "models/Room";
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
   client.on(
-    'client:edit_issues_voting',
+    "client:edit_issues_voting",
     async ({ issue, roomId }: { issue: Issue; roomId: string }) => {
-      console.log('Client edited voting now issues', roomId, client.sessionId);
+      console.log("Client edited voting now issues", roomId, client.sessionId);
 
       await Room.updateOne(
         {
-          _id: roomId
+          _id: roomId,
         },
         {
           $set: {
-            'issues.$[].voting': false
-          }
+            "issues.$[].voting": false,
+          },
         }
       );
 
       await Room.updateOne(
         {
-          _id: roomId
+          _id: roomId,
         },
         {
           $set: {
-            'issues.$[e1].voting': true
-          }
+            "issues.$[e1].voting": true,
+          },
         },
         {
-          arrayFilters: [{ 'e1.id': issue.id }]
+          arrayFilters: [{ "e1.id": issue.id }],
         }
       );
 
@@ -39,7 +39,7 @@ export default (io: Server, client: Socket & { sessionId?: string }) => {
         return;
       }
 
-      client.broadcast.to(roomId).emit('server:issues', room.issues);
+      client.broadcast.to(roomId).emit("server:issues", room.issues);
     }
   );
 };

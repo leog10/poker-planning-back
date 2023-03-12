@@ -1,35 +1,35 @@
-import { Server, Socket } from 'socket.io';
-import Room from 'models/Room';
+import { Server, Socket } from "socket.io";
+import Room from "models/Room";
 
 export default (io: Server, client: Socket & { sessionId?: string }) => {
-  client.on('client:card_select', async ({ card, roomId, clientId }) => {
-    console.log('Client select card', roomId, card, clientId, client.sessionId);
+  client.on("client:card_select", async ({ card, roomId, clientId }) => {
+    console.log("Client select card", roomId, card, clientId, client.sessionId);
 
     await Room.updateOne(
       {
-        _id: roomId
+        _id: roomId,
       },
       {
         $set: {
-          'users.$[e1].card': card,
-          'voting.$[e1].card': card
-        }
+          "users.$[e1].card": card,
+          "voting.$[e1].card": card,
+        },
       },
       {
-        arrayFilters: [{ 'e1.clientId': client.sessionId }]
+        arrayFilters: [{ "e1.clientId": client.sessionId }],
       }
     );
 
     const room = await Room.findById(roomId);
 
     if (!room) {
-      console.log('room not found on card select');
+      console.log("room not found on card select");
       return;
     }
 
-    io.to(roomId).emit('server:users', {
+    io.to(roomId).emit("server:users", {
       roomVoting: room.voting,
-      reveal: room.reveal
+      reveal: room.reveal,
     });
   });
 };

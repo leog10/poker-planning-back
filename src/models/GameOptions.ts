@@ -1,8 +1,8 @@
-import { prop } from '@typegoose/typegoose';
-import { User } from './User';
+import { prop } from "@typegoose/typegoose";
+import { User } from "./User";
 
 export class GameOptions {
-  @prop({ default: '' })
+  @prop({ default: "" })
   gameName: string;
 
   @prop()
