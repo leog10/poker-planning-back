@@ -9,11 +9,25 @@ const dbURI = process.env.DB_URI;
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: process.env.FRONT_URL,
   },
 });
 
+// Utility function to suspend execution of current process
+async function sleep(milliseconds: number) {
+  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+// Set variables to be used by all calls to `mightFail`
+// Tip: You could also store `MAX_RETRIES` and `THROTTLE_TIME_MS`
+// in App Services Values
+const MAX_RETRIES = 5;
+const THROTTLE_TIME_MS = 3000;
+let currentRetries = 1;
+
 async function main() {
+  console.log("Connecting... Attempt:", currentRetries);
+
   try {
     mongoose.set("strictQuery", false);
     if (!dbURI) {
@@ -27,7 +41,18 @@ async function main() {
       console.log("App live on port", PORT);
     });
   } catch (error) {
+    if (currentRetries === MAX_RETRIES) {
+      console.error(
+        `Reached maximum number of retries (${MAX_RETRIES}) without successful execution.`
+      );
+      return;
+    }
+
     console.log("Error on connection to database");
+    console.error(error);
+    currentRetries++;
+    await sleep(THROTTLE_TIME_MS);
+    await main();
   }
 }
 
